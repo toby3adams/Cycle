@@ -56,14 +56,13 @@ namespace Unit05.Game.Casting
             for (int i = 0; i < numberOfSegments; i++)
             {
                 Actor tail = segments.Last<Actor>();
-                Point velocity = tail.GetVelocity();
+                Point velocity = segments[0].GetVelocity();
                 Point offset = velocity.Reverse();
                 Point position = tail.GetPosition().Add(offset);
 
                 Actor segment = new Actor();
                 segment.SetPosition(position);
-                segment.SetVelocity(velocity);
-                segment.SetText("#");
+                segment.SetText("=");
                 segment.SetColor(Constants.GREEN);
                 segments.Add(segment);
             }
@@ -72,18 +71,25 @@ namespace Unit05.Game.Casting
         /// <inheritdoc/>
         public override void MoveNext()
         {
-            foreach (Actor segment in segments)
-            {
-                segment.MoveNext();
-            }
+            // foreach (Actor segment in segments)//Moves each actor to the next position starting with the head and going down the tail.
+            // {
+            //     segment.MoveNext();
+            // }
 
-            for (int i = segments.Count - 1; i > 0; i--)
-            {
-                Actor trailing = segments[i];
-                Actor previous = segments[i - 1];
+            // for (int i = segments.Count - 1; i > 0; i--)
+            // {
+            //     Actor trailing = segments[i];
+            //     Actor previous = segments[i - 1];
+            //     Point velocity = previous.GetVelocity();
+            //     trailing.SetVelocity(velocity);
+            // }
+
+            segments[0].MoveNext();// This is needed to move the actor.
+            
+                Actor trailing = segments[0];//head
+                Actor previous = segments[0];
                 Point velocity = previous.GetVelocity();
                 trailing.SetVelocity(velocity);
-            }
         }
 
         /// <summary>
@@ -103,12 +109,10 @@ namespace Unit05.Game.Casting
             int x = Constants.MAX_X / 2;
             int y = Constants.MAX_Y / 2;
 
-            for (int i = 0; i < Constants.SNAKE_LENGTH; i++)
-            {
-                Point position = new Point(x - i * Constants.CELL_SIZE, y);
+             Point position = new Point(x * Constants.CELL_SIZE, y);
                 Point velocity = new Point(1 * Constants.CELL_SIZE, 0);
-                string text = i == 0 ? "8" : "#";
-                Color color = i == 0 ? Constants.YELLOW : Constants.GREEN;
+                string text = "∞";
+                Color color = Constants.YELLOW;
 
                 Actor segment = new Actor();
                 segment.SetPosition(position);
@@ -116,7 +120,6 @@ namespace Unit05.Game.Casting
                 segment.SetText(text);
                 segment.SetColor(color);
                 segments.Add(segment);
-            }
         }
     }
 }
